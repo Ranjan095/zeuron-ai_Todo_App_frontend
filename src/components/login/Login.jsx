@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/auth/authAction";
 
 let obj = {
@@ -13,6 +13,12 @@ function Login() {
   let [formData, setForaData] = useState(obj);
 
   let dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  let { isLoading } = useSelector((store) => store.authReducer);
+
+  let store = useSelector((store) => store.authReducer);
+  // console.log(store);
 
   let handleInput = (e) => {
     let { name, value } = e.target;
@@ -23,7 +29,11 @@ function Login() {
   let handleSubmit = (e) => {
     e.preventDefault();
     // console.log(formData);
-    dispatch(loginUser(formData));
+    dispatch(loginUser(formData)).then((res) => {
+      setForaData(obj);
+      navigate("/");
+      // console.log(res);
+    });
   };
   return (
     <section>
@@ -68,6 +78,7 @@ function Login() {
                 </label>
                 <div className="mt-2">
                   <input
+                    autoComplete="email"
                     name="email"
                     onChange={handleInput}
                     value={formData.email}
@@ -98,6 +109,7 @@ function Login() {
                 </div>
                 <div className="mt-2">
                   <input
+                    autoComplete="password"
                     value={formData.password}
                     onChange={handleInput}
                     name="password"
@@ -108,12 +120,19 @@ function Login() {
                 </div>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                >
-                  Get started <ArrowRight className="ml-2" size={16} />
-                </button>
+                {isLoading ? (
+                  <button className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80">
+                    Loading...
+                    <ArrowRight className="ml-2" size={16} />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  >
+                    Get started <ArrowRight className="ml-2" size={16} />
+                  </button>
+                )}
               </div>
             </div>
           </form>

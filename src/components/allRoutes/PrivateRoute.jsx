@@ -1,10 +1,11 @@
 /** @format */
 
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 
 export const PrivetRoute = ({ children }) => {
-  let isAuth = true;
+  let { isAuth } = useSelector((store) => store.authReducer);
 
-  // console.log(location)
+  // console.log(isAuth);
   return isAuth ? children : <Navigate to="/login" />;
 };
