@@ -1,4 +1,11 @@
-import { LOGIN_ERROR, LOGIN_REQUEST, LOGIN_SUCCESS } from "./authType";
+import {
+  LOGIN_ERROR,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  SIGNUP_ERROR,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
+} from "./authType";
 
 let initialState = {
   isAuth: JSON.parse(localStorage.getItem("token")) ? true : false,
@@ -25,3 +32,25 @@ let authReducer = (state = initialState, { type, payload }) => {
 };
 
 export default authReducer;
+
+let initialData = {
+  isLoading: false,
+  isError: false,
+};
+
+export let signupReducer = (state = initialData, { type, payload }) => {
+  switch (type) {
+    case SIGNUP_REQUEST: {
+      return { ...state, isLoading: true };
+    }
+    case SIGNUP_SUCCESS: {
+      return { ...state, isLoading: false };
+    }
+    case SIGNUP_ERROR: {
+      return { ...state, isLoading: false, isError: true };
+    }
+
+    default:
+      return state;
+  }
+};

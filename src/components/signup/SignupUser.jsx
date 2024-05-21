@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { signUpUser } from "../../redux/auth/authAction";
 
 let obj = {
   name: "",
@@ -10,6 +12,12 @@ let obj = {
 
 function SignupUser() {
   let [input, setInput] = useState(obj);
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  let { isError, isLoading } = useSelector((store) => store.signupReducer);
+
+  // console.log(isError,isLoading)
 
   let handleInput = (e) => {
     let { name, value } = e.target;
@@ -18,7 +26,15 @@ function SignupUser() {
 
   let handleSubmit = (e) => {
     e.preventDefault();
-    console.log(input);
+    dispatch(signUpUser(input))
+      .then((res) => {
+        res?.data && setInput(obj);
+        res?.data && navigate("/login");
+        // console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -129,12 +145,21 @@ function SignupUser() {
                 </div>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                >
-                  Create Account <ArrowRight className="ml-2" size={16} />
-                </button>
+                {isLoading ? (
+                  <button
+                    type="button"
+                    className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  >
+                    Creating...
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  >
+                    Create Account <ArrowRight className="ml-2" size={16} />
+                  </button>
+                )}
               </div>
             </div>
           </form>
