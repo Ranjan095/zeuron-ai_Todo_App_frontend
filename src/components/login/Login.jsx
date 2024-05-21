@@ -69,13 +69,15 @@ function Login() {
           <form onSubmit={handleSubmit} className="mt-8">
             <div className="space-y-5">
               <div>
-                <label
-                  htmlFor=""
-                  className="text-base font-medium text-gray-900"
-                >
-                  {" "}
-                  Email address{" "}
-                </label>
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor=""
+                    className="text-base font-medium text-gray-900"
+                  >
+                    {" "}
+                    Email address{" "}
+                  </label>
+                </div>
                 <div className="mt-2">
                   <input
                     autoComplete="email"
