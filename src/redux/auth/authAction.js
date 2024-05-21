@@ -9,6 +9,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
 } from "./authType";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 export let loginUser = (data) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
@@ -17,11 +18,15 @@ export let loginUser = (data) => (dispatch) => {
     .post(`${basicApiUrl}/user/login`, data)
     .then((res) => {
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
-      // console.log(res.data);
+      // console.log(res);
+      toastSuccess("Login successful");
+      return res;
     })
     .catch((err) => {
       dispatch({ type: LOGIN_ERROR });
-      console.log(err.response.data);
+      console.log(err);
+      toastError(err?.response?.data?.error);
+      return err;
     });
 };
 
@@ -32,11 +37,13 @@ export let signUpUser = (data) => (dispatch) => {
     .post(`${basicApiUrl}/user/create`, data)
     .then((res) => {
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
+      toastSuccess("User created successfully");
       return res.data;
     })
     .catch((err) => {
       dispatch({ type: SIGNUP_ERROR });
       console.log(err);
+      toastError("Something went wrong");
       return err;
     });
 };

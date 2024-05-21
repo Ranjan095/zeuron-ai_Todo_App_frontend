@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/auth/authAction";
+import { toast } from "react-toastify";
 
 let obj = {
   email: "",
@@ -29,11 +30,14 @@ function Login() {
   let handleSubmit = (e) => {
     e.preventDefault();
     // console.log(formData);
-    dispatch(loginUser(formData)).then((res) => {
-      setForaData(obj);
-      navigate("/");
-      // console.log(res);
-    });
+    dispatch(loginUser(formData))
+      .then((res) => {
+        res?.data && setForaData(obj);
+        res?.data && navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <section>

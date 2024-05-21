@@ -9,6 +9,8 @@ import SignupUser from "./components/signup/SignupUser.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import { PrivetRoute } from "./components/allRoutes/PrivateRoute.jsx";
 import store from "./redux/store.js";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let AppLayout = () => {
   return (
@@ -25,6 +27,19 @@ const router = createBrowserRouter([
     element: (
       <Provider store={store}>
         <AppLayout />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
       </Provider>
     ),
     errorElement: <ErrorPage />,
