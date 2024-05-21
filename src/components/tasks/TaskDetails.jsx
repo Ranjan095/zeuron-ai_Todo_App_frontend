@@ -33,8 +33,10 @@ const TaskDetails = () => {
   ) : (
     <div className={`text-left h-[100%] p-[20px] rounded-md ${data.status === "pending" ? " bg-red-100":" bg-green-100"}`}>
       <h1>Title : {data.title}</h1>
-      <h1 className="font-semibold">Description : {data.description}</h1>
-      <h1 className="font-semibold">Status : {data.status}</h1>
+      <h1 className="font-semibold">Description : {data?.description}</h1>
+      <h1 className="font-semibold">Status : {data?.status}</h1>
+      <h1 className="font-semibold">Category : {data?.category}</h1>
+      <h1 className="font-semibold">Prority : {data?.priority <= 5 ? "Low":"High"}</h1>
     </div>
   );
 };
