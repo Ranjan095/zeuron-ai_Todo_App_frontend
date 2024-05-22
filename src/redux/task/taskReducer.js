@@ -5,6 +5,9 @@ import {
   GET_TASK_ERROR,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
+  POST_TASK_ERROR,
+  POST_TASK_REQUEST,
+  POST_TASK_SUCCESS,
   UPDATE_TASK_ERROR,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
@@ -16,6 +19,7 @@ let initialState = {
   isError: false,
   isUpdating: false,
   isDeleting: false,
+  iscreating: false,
 };
 
 let taskReducer = (state = initialState, { type, payload }) => {
@@ -61,6 +65,15 @@ let taskReducer = (state = initialState, { type, payload }) => {
     }
     case DELETE_TASK_ERROR: {
       return { ...state, isDeleting: false };
+    }
+    case POST_TASK_REQUEST: {
+      return { ...state, iscreating: true };
+    }
+    case POST_TASK_SUCCESS: {
+      return { ...state, iscreating: false, tasks: [...state.tasks, payload] };
+    }
+    case POST_TASK_ERROR: {
+      return { ...state, iscreating: false };
     }
     default:
       return state;

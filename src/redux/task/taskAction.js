@@ -5,6 +5,9 @@ import {
   DELETE_TASK_SUCCESS,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
+  POST_TASK_ERROR,
+  POST_TASK_REQUEST,
+  POST_TASK_SUCCESS,
   UPDATE_TASK_ERROR,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
@@ -57,6 +60,24 @@ export let deleteTask = (id, token) => (dispatch) => {
     })
     .catch((err) => {
       toastError("Something went wrong");
+      console.log(err);
+    });
+};
+
+export let postTask = (data, token) => (dispatch) => {
+  dispatch({ type: POST_TASK_REQUEST });
+  return axios
+    .post(`${basicApiUrl}/tasks/create`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      toastSuccess("Task created successfully");
+      dispatch({ type: POST_TASK_SUCCESS, payload: res?.data?.data });
+      return res?.data?.data;
+    })
+    .catch((err) => {
+      toastError("Something went wrong");
+      dispatch({ type: POST_TASK_ERROR });
       console.log(err);
     });
 };

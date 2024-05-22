@@ -11,6 +11,8 @@ import { PrivetRoute } from "./components/allRoutes/PrivateRoute.jsx";
 import store from "./redux/store.js";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import About from "./components/about/About.jsx";
+import Contact from "./components/contact/Contact.jsx";
 
 let AppLayout = () => {
   return (
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignupUser />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
     ],
   },
