@@ -1,13 +1,14 @@
-import { ArrowRight, Edit, Edit2 } from "lucide-react";
-import React, { useState } from "react";
+import { Edit2, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Modal from "../modal/Modal";
 import EditModal from "../modal/EditModal";
+import DeleteTask from "../modal/DeleteTask";
 
 const TasksList = ({ _id, title, status }) => {
   let [searchParams, setSearchParams] = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
+  let [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   let handleSearchParams = (id) => {
     setSearchParams({ id });
@@ -20,6 +21,10 @@ const TasksList = ({ _id, title, status }) => {
   let handleModal = () => {
     setIsOpen(true);
     toggleMenu();
+  };
+
+  let handleDeleteModal = () => {
+    setIsOpenDeleteModal(true);
   };
 
   return (
@@ -49,7 +54,7 @@ const TasksList = ({ _id, title, status }) => {
             </p>
           </div>
         </div>
-        <div className="w-full lg:w-1/5 h-full flex justify-center lg:justify-end mt-2 lg:mt-0 ">
+        <div className="w-full lg:w-1/5 h-full flex justify-between mt-2 lg:mt-0 ">
           <button
             type="button"
             onClick={handleModal}
@@ -57,9 +62,23 @@ const TasksList = ({ _id, title, status }) => {
           >
             <Edit2 size={20} />
           </button>
+          <button
+            type="button"
+            onClick={handleDeleteModal}
+            className="h-full w-full lg:w-auto flex justify-center items-center p-2 lg:p-0"
+          >
+            <Trash2 size={20} />
+          </button>
         </div>
       </div>
       {isOpen && <EditModal isOpen={isOpen} setIsOpen={setIsOpen} id={_id} />}
+      {isOpenDeleteModal && (
+        <DeleteTask
+          isOpen={isOpenDeleteModal}
+          setIsOpen={setIsOpenDeleteModal}
+          id={_id}
+        />
+      )}
     </>
   );
 };

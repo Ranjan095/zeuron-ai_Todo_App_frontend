@@ -1,4 +1,7 @@
 import {
+  DELETE_TASK_ERROR,
+  DELETE_TASK_REQUEST,
+  DELETE_TASK_SUCCESS,
   GET_TASK_ERROR,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
@@ -12,6 +15,7 @@ let initialState = {
   isLoading: false,
   isError: false,
   isUpdating: false,
+  isDeleting: false,
 };
 
 let taskReducer = (state = initialState, { type, payload }) => {
@@ -46,6 +50,17 @@ let taskReducer = (state = initialState, { type, payload }) => {
     }
     case UPDATE_TASK_ERROR: {
       return { ...state, isUpdating: false };
+    }
+    case DELETE_TASK_REQUEST: {
+      return { ...state, isDeleting: true };
+    }
+    case DELETE_TASK_SUCCESS: {
+      sessionStorage.removeItem(payload);
+      let newTasks = state.tasks.filter((task) => task._id !== payload);
+      return { ...state, isDeleting: false, tasks: newTasks };
+    }
+    case DELETE_TASK_ERROR: {
+      return { ...state, isDeleting: false };
     }
     default:
       return state;

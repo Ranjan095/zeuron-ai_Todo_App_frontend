@@ -1,13 +1,15 @@
 import axios from "axios";
 import { basicApiUrl } from "../../utils/url";
 import {
+  DELETE_TASK_REQUEST,
+  DELETE_TASK_SUCCESS,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
   UPDATE_TASK_ERROR,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
 } from "./taskActionType";
-import { toastSuccess } from "../../utils/toast";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 export let getTaskData = (token) => (dispatch) => {
   dispatch({ type: GET_TASK_REQUEST });
@@ -38,6 +40,23 @@ export let updateTask = (data, token) => (dispatch) => {
     })
     .catch((err) => {
       dispatch({ type: UPDATE_TASK_ERROR });
+      console.log(err);
+    });
+};
+
+export let deleteTask = (id, token) => (dispatch) => {
+  dispatch({ type: DELETE_TASK_REQUEST });
+  return axios
+    .delete(`${basicApiUrl}/tasks/delete-task?taskId=${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      toastSuccess("Task deleted successfully");
+      dispatch({ type: DELETE_TASK_SUCCESS, payload: id });
+      return res;
+    })
+    .catch((err) => {
+      toastError("Something went wrong");
       console.log(err);
     });
 };
