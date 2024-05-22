@@ -2,6 +2,7 @@ import {
   LOGIN_ERROR,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
+  LOGOUT_USER,
   SIGNUP_ERROR,
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
@@ -10,6 +11,7 @@ import {
 let initialState = {
   isAuth: JSON.parse(localStorage.getItem("token")) ? true : false,
   token: JSON.parse(localStorage.getItem("token")),
+  name: JSON.parse(localStorage.getItem("name")),
   isLoading: false,
   isError: false,
 };
@@ -21,7 +23,15 @@ let authReducer = (state = initialState, { type, payload }) => {
     }
     case LOGIN_SUCCESS: {
       localStorage.setItem("token", JSON.stringify(payload.token));
-      return { ...state, isLoading: false, token: payload.token, isAuth: true };
+      localStorage.setItem("name", JSON.stringify(payload.name));
+      // console.log(payload);
+      return {
+        ...state,
+        isLoading: false,
+        name: payload.name,
+        token: payload.token,
+        isAuth: true,
+      };
     }
     case LOGIN_ERROR: {
       return { ...state, isLoading: false, isError: true };
@@ -48,6 +58,12 @@ export let signupReducer = (state = initialData, { type, payload }) => {
     }
     case SIGNUP_ERROR: {
       return { ...state, isLoading: false, isError: true };
+    }
+    case LOGOUT_USER: {
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      // console.log("logged out");
+      return { ...state, isAuth: false, token: null, name: null };
     }
 
     default:

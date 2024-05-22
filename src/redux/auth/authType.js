@@ -8,3 +8,5 @@ export let LOGIN_REQUEST = "LOGIN_REQUEST";
 export let LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export let LOGIN_ERROR = "LOGIN_ERROR";
 
+export let LOGOUT_USER ="LOGOUT_USER";
+

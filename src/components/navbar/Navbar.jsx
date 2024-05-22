@@ -2,7 +2,9 @@
 
 import React from "react";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LOGOUT_USER } from "../../redux/auth/authType";
 
 const menuItems = [
   {
@@ -21,6 +23,18 @@ const menuItems = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  let { name,isAuth } = useSelector((store) => store.authReducer);
+  console.log(isAuth)
+
+  let handleLogout = () => {
+    dispatch({ type: LOGOUT_USER });
+    navigate("/login");
+  };
+
+  // console.log(name);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -63,24 +77,37 @@ export function Navbar() {
             ))}
           </ul>
         </div>
-        <div className="hidden space-x-2 lg:block">
-          <Link to={"/signup"}>
+        {isAuth ? (
+          <div>
+            {" "}
             <button
+              onClick={handleLogout}
               type="button"
-              className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              className="rounded-md bg-red-400 bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-red-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
-              Sign up
+              Logout
             </button>
-          </Link>
-          <Link to={"/login"}>
-            <button
-              type="button"
-              className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            >
-              Log In
-            </button>
-          </Link>
-        </div>
+          </div>
+        ) : (
+          <div className="hidden space-x-2 lg:block">
+            <Link to={"/signup"}>
+              <button
+                type="button"
+                className="rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-black hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Sign up
+              </button>
+            </Link>
+            <Link to={"/login"}>
+              <button
+                type="button"
+                className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Log In
+              </button>
+            </Link>
+          </div>
+        )}
         <div className="lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
         </div>

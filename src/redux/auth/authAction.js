@@ -11,6 +11,7 @@ import {
 } from "./authType";
 import { toastError, toastSuccess } from "../../utils/toast";
 
+
 export let loginUser = (data) => (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
@@ -47,3 +48,4 @@ export let signUpUser = (data) => (dispatch) => {
       return err;
     });
 };
+
