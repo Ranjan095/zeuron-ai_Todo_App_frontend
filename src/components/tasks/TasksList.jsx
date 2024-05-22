@@ -51,6 +51,7 @@ const TasksList = ({ _id, title, status }) => {
         </div>
         <div className="w-full lg:w-1/5 h-full flex justify-center lg:justify-end mt-2 lg:mt-0 ">
           <button
+            type="button"
             onClick={handleModal}
             className="h-full w-full lg:w-auto flex justify-center items-center p-2 lg:p-0"
           >
@@ -58,11 +59,9 @@ const TasksList = ({ _id, title, status }) => {
           </button>
         </div>
       </div>
-      <EditModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      {isOpen && <EditModal isOpen={isOpen} setIsOpen={setIsOpen} id={_id} />}
     </>
   );
 };
 
 export default TasksList;
-
-
